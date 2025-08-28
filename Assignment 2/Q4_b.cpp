@@ -5,6 +5,7 @@ using namespace std;
 int main()
 {
   string str;
+  cout<<"enter the string:";
   getline(cin, str);
 
   for (int i = 0; i < str.size() / 2; i++)
@@ -17,4 +18,5 @@ int main()
 
   cout << str;
   return 0;
+
 }

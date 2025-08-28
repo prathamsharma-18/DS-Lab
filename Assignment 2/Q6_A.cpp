@@ -1,86 +1,80 @@
 // Write a program to implement the following operations on a Sparse Matrix,
 // assuming the matrix is represented using a triplet.
 // Transpose of a matrix.
-
 #include <iostream>
-#include <vector>
 using namespace std;
 
-int main()
-{
-  int row = 4, col = 5;
-  int sparse[4][5] = {
-      {0, 0, 3, 0, 4},
-      {0, 0, 5, 7, 0},
-      {0, 0, 0, 0, 0},
-      {0, 2, 6, 0, 0}};
+int main(){
 
-  int nonZero = 0;
-  for (int i = 0; i < row; i++)
-  {
-    for (int j = 0; j < col; j++)
-    {
-      if (sparse[i][j] != 0)
-        nonZero++;
+    int i,j;
+    int m,n;
+    int size=0;
+
+    cout<<"enter the dimensions : (row),(column)";
+    cin>>m>>n;
+
+    int a[m][n];
+    cout<<"enter the elements :"<<endl;
+
+    for(i=0; i<m; i++){
+        for(j=0; j<n; j++){
+            cin>>a[i][j];
+            if (a[i][j]!=0) size++;
+
+        }
     }
-  }
-  int k = 0;
-  int triplet[nonZero][3];
-  for (int i = 0; i < row; i++)
-  {
-    for (int j = 0; j < col; j++)
-    {
+    int sp[size+1][3];
+    sp[0][0]=m;
+    sp[0][1]=n;
+    sp[0][2]=size;
 
-      if (sparse[i][j] != 0)
-      {
-        triplet[k][0] = i;
-        triplet[k][1] = j;
-        triplet[k][2] = sparse[i][j];
-        k++;
-      }
+    int row=1;
+    for(i=0; i<m; i++){
+        for(j=0; j<n; j++){
+            if (a[i][j]!=0){
+                sp[row][0]=i;
+                sp[row][1]=j;
+                sp[row][2]=a[i][j];
+                row++;
+            }
+        }
     }
-  }
 
-  cout << "Original Triplet Representation:" << endl;
-  cout << "Row\tColumn\tValue" << endl;
-  for (int i = 0; i < nonZero; i++)
-  {
-
-    cout << triplet[i][0] << "\t" << triplet[i][1] << "\t" << triplet[i][2] << endl;
-  }
-
-  cout << "Transpose: " << endl;
-  for (int i = 0; i < nonZero; i++)
-  {
-    int temp = triplet[i][0];
-    triplet[i][0] = triplet[i][1];
-    triplet[i][1] = temp;
-  }
-
-  cout << "Transposed Triplet Representation:" << endl;
-  cout << "Row\tColumn\tValue" << endl;
-  for (int i = 0; i < nonZero; i++)
-  {
-    cout << triplet[i][0] << "\t" << triplet[i][1] << "\t" << triplet[i][2] << endl;
-  }
-
-  int transpose[5][4] = {0};
-
-  for (int i = 0; i < nonZero; i++)
-  {
-    int r = triplet[i][0];
-    int c = triplet[i][1];
-    transpose[r][c] = triplet[i][2];
-  }
-  cout << "Transpose Matrix: " << endl;
-  for (int i = 0; i < col; i++)
-  {
-    for (int j = 0; j < row; j++)
-    {
-      cout << transpose[i][j] << " ";
+    cout<<"the original sparse matrix is : "<<endl;
+    for(i=0; i<size+1; i++){
+        for(j=0; j<3; j++){
+            cout<<sp[i][j]<<" ";
+        }
+        cout<<endl;
     }
-    cout << endl;
-  }
 
-  return 0;
+    //transpose of sparse matrix::::
+    cout<<"transpose of sparse matrix:";
+
+    int res[size+1][3];
+    res[0][0]=n;
+    res[0][1]=m;
+    res[0][2]=size;
+
+    int count=0;
+    for(j=0; j<n; j++){
+        for(i=1; i<=size; i++){
+            if(sp[i][1]==j){
+                res[++count][0]=j;
+                res[count][1]=sp[i][0];
+                res[count][2]=sp[i][2];
+            }
+        }
+    }
+
+    for(i=0; i<size+1; i++){
+        for(j=0; j<3; j++){
+            cout<<res[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    return 0;
+}
+
 }

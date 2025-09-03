@@ -1,0 +1,16 @@
+// User function template for C++ 
+class Solution {
+    public:
+    /* Returns count of pairs with difference k */
+    int countPairs(vector<int>& arr, int k)
+    { int n= arr.size();
+    int count=0;
+    for(int i=0; i<n; i++){ 
+        for(int j=i+1; j<n;j++){
+            if(arr[i]-arr[j]==k || arr[i]-arr[j]==-k)
+            { count++; }
+            }
+            }
+            return count; 
+        
+    } };

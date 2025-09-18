@@ -1,34 +1,20 @@
 // Write a program to convert an Infix expression into a Postfix expression.
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 using namespace std;
 
-class Stack{
-    int top=-1;
+class Stack {
+    int top;
     int capacity;
     char *arr;
-    string str;
-    public:
 
-    Stack(){
-        cout<<"entr the expression: ";
-        getline(cin,str);
-
-        capacity= str.length();
-        arr= new char[capacity];
-
+public:
+    Stack(int size) {
+        capacity = size;
+        arr = new char[capacity];
+        top = -1;
     }
-    int precedence(char op) {
-    if (op == '^') return 3;
-    if (op == '*' || op == '/') return 2;
-    if (op == '+' || op == '-') return 1;
-    return 0;
-}
-
-bool isOperator(char c) {
-    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
-}
 
     ~Stack() {
         delete[] arr;
@@ -55,5 +41,58 @@ bool isOperator(char c) {
     bool isEmpty() {
         return top == -1;
     }
-    
+};
+
+int precedence(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+bool isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
+}
+
+string infixToPostfix(string infix) {
+    Stack st(infix.length());
+    string postfix = "";
+
+    for (char c : infix) {
+        if (isalnum(c)) {
+            postfix += c;
+        }
+        else if (c == '(') {
+            st.push(c);
+        }
+        else if (c == ')') {
+            while (!st.isEmpty() && st.peek() != '(') {
+                postfix += st.pop();
+            }
+            st.pop();
+        }
+        else if (isOperator(c)) {
+            while (!st.isEmpty() && precedence(st.peek()) >= precedence(c)) {
+                postfix += st.pop();
+            }
+            st.push(c);
+        }
+    }
+
+    while (!st.isEmpty()) {
+        postfix += st.pop();
+    }
+
+    return postfix;
+}
+
+int main() {
+    string expr;
+    cout << "Enter infix expression: ";
+    getline(cin, expr);
+
+    string result = infixToPostfix(expr);
+    cout << "Postfix expression: " << result << endl;
+
+    return 0;
 }
